@@ -1,0 +1,71 @@
+
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="validation.css">
+ 
+
+  </head>
+
+  <body>
+    <form novalidate>
+      <span>Enter a valid .com email address:</span>
+      <input type ="email" id="email" name="email" minlength="8" required pattern="[\S]*@[\S]*\.com">   
+      <span class="error" aria-live="polite"></span>
+      <br>
+      <br>
+
+      <label for="zipcode">Enter a valid zipcode:</label>
+      <input id="zipcode" name="zipcode" minlength=5 maxlength=5 required>
+      <br>
+      <br>
+
+      <label for="country">Enter a valid country:</label>
+      <input id="country" name="country" required>
+      <br>
+      <br>
+
+      <label for="pw">Enter your password:</label>
+      <input id="pw" name="pw" required>
+      <br>
+      <br>
+
+      <label for="confirm">confirm password:</label>
+      <input id="confirmation" name="confirmation" required>
+      
+      <input type="submit">
+
+    </form>
+  </body>
+    
+  <script>
+    const email = document.getElementById("email")
+    const emailError = document.querySelector("span.error")
+    email.addEventListener("input",function (event) {
+      if (email.validity.valid){
+        emailError.textContent =""
+        emailError.className="error" 
+      }
+      else {
+        showError()   
+      }
+    })
+
+    function showError() {
+      if (email.validity.tooShort){
+        emailError.textContent="you need at least 8 characters"
+      }
+      else if (email.validity.typeMismatch){
+        emailError.textContent="you need to enter a valid .com email address!"  
+      }
+
+      
+    }
+    
+
+  </script>
+
+</html
