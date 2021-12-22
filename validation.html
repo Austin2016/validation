@@ -18,25 +18,31 @@
       <br>
       <br>
 
-      <label for="zipcode">Enter a valid zipcode:</label>
-      <input id="zipcode" name="zipcode" minlength=5 maxlength=5 required>
+      <label for="zipcode">Enter a valid 5 digit zipcode:</label>
+      <input id="zipcode" name="zipcode" minlength=5 maxlength=5 required pattern ="^[0-9]*$">
+      <span class="errorZip" aria-live="polite"></span>
       <br>
       <br>
 
       <label for="country">Enter a valid country:</label>
-      <input id="country" name="country" required>
+      <input id="country" name="country" required pattern="^[^0-9]+$"> 
+      <span class="errorCountry" aria-live="polite"></span>
       <br>
       <br>
 
       <label for="pw">Enter your password:</label>
       <input id="pw" name="pw" required>
+      <span class="errorPw" aria-live="polite"></span>
       <br>
       <br>
 
       <label for="confirm">confirm password:</label>
       <input id="confirmation" name="confirmation" required>
-      
-      <input type="submit">
+      <span class="errorPwConfirm" aria-live="polite"></span>
+      <br>
+      <br>
+      <input type="submit" id="submit">
+      <span class="errorSubmit" aria-live="polite"></span>
 
     </form>
   </body>
@@ -44,13 +50,50 @@
   <script>
     const email = document.getElementById("email")
     const emailError = document.querySelector("span.error")
+    const country = document.getElementById("country")
+    const errorCountry = document.querySelector("span.errorCountry")
+    const zipcode = document.getElementById("zipcode")
+    const errorZip = document.querySelector("span.errorZip")
+
+    const password = document.getElementById("pw")
+    const errorPw = document.querySelector("span.errorPw")
+    const passwordConfirm = document.getElementById("confirmation")
+    const errorPasswordConfirm = document.querySelector("span.errorPwConfirm")
+    
+    const submit = document.getElementById("submit")
+    const errorSubmit = document.querySelector("span.errorSubmit")
+
+
     email.addEventListener("input",function (event) {
       if (email.validity.valid){
         emailError.textContent =""
         emailError.className="error" 
       }
       else {
-        showError()   
+        showError()
+          
+      }
+    })
+
+    country.addEventListener("input",function (event) {
+      if (country.validity.valid){
+        errorCountry.textContent =""
+        errorCountry.className="errorCountry" 
+      }
+      else {
+        errorCountry.textContent="can't have a number"
+         
+      }
+    })
+
+    zipcode.addEventListener("input",function (event) {
+      if (zipcode.validity.valid){
+        errorZip.textContent =""
+        errorZip.className="errorZip" 
+      }
+      else {
+        errorZip.textContent="must be 5 numbers!" 
+          
       }
     })
 
@@ -61,8 +104,47 @@
       else if (email.validity.typeMismatch){
         emailError.textContent="you need to enter a valid .com email address!"  
       }
+    }
 
-      
+    passwordConfirm.addEventListener("input",function(event) {
+      if (passwordConfirm.value == password.value) {
+        errorPasswordConfirm.textContent = ""
+        errorPasswordConfirm.className="errorPwConfirm"
+      }
+      else {
+        errorPasswordConfirm.textContent = "passwords need to match!"
+        
+      }
+
+    })
+
+    submit.addEventListener("click", function(event){ 
+      var valid 
+      valid = finalCheck()
+      if(valid==0){
+        errorSubmit.textContent="can't submit due to invalid field(s)"
+        event.preventDefault() 
+      }
+      else {
+        errorSubmit.textContent=""
+        alert("high five!")  
+      }
+
+
+    })
+
+    function finalCheck(){
+      const array = [email,country,zipcode]
+      var valid = 1 
+      for (let i = 0; i<array.length;i++){
+        if(array[i].validity.valid == false){
+          valid = 0     
+        }
+      }
+      if(passwordConfirm.value != password.value){
+        valid = 0
+      }
+      return valid      
     }
     
 
